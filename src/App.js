@@ -5,104 +5,50 @@ import Facture from './components/Facture';
 const data = [
   {
     id : 0,
+    nb_tech : 3,
     heure_debut : '08:15',
     heure_fin : '13:00',
     'date' : '27-01-2019',
     barème : 20,
-    tech : 'Mohamed',
-    teche : 'Mohamed',
+    techniciens : [{
+      nom : "yagoubi",
+      prenom : "AEK"
+    },
+    {
+      nom : "Rahili",
+      prenom : "AEK",
+    }, {
+      nom : "Yagoubi",
+      prenom : "AEK",
+     
+    }]
 
 
   },
   {
     id : 1,
-    heure_debut : '08:00',
-    heure_fin : '17:00',
-    'date' : '27-01-2019',
-    barème : 15,
-    tech : 'Ali',
-    teche : 'Mohamed',
-
-  }
-  ,
-  {
-    id : 1,
-    heure_debut : '11:00',
-    heure_fin : '17:10',
-    barème : 15,
-    'date' : '27-01-2019',
-    tech : 'Omar',
-    
-    teche : 'Mohamed',
-  }
-  ,
-  {
-    id : 1,
-    heure_debut : '11:00',
-    heure_fin : '17:10',
-    'date' : '27-01-2019',
-    barème : 15,
-    tech : 'Omar',
-    teche : 'Mohamed',
-
-  }
-  ,
-  {
-    id : 1,
-    heure_debut : '11:00',
-    heure_fin : '17:10',
-    'date' : '27-01-2019',
-    barème : 15,
-    tech : 'Omar',
-    teche : 'Mohamed',
-
-  },
-  {
-    id : 0,
+    nb_tech : 1,
     heure_debut : '08:15',
-    heure_fin : '13:10',
+    heure_fin : '13:35',
     'date' : '27-01-2019',
-    barème : 20,
-    tech : 'Mohamed',
-    teche : 'Mohamed',
+    barème : 30,
+    techniciens : [{
+      nom : "Sedik",
+      prenom : "Ilyes"
+    },
+    {
+      nom : "rahili",
+      prenom : "abdelhadi",
+     
+    }]
 
-  },
-  {
-    id : 1,
-    heure_debut : '08:00',
-    heure_fin : '17:00',
-    'date' : '27-01-2019',
-    barème : 15,
-    tech : 'Ali',
-    teche : 'Mohamed',
-
-  }
-  ,
-  {
-    id : 1,
-    heure_debut : '11:00',
-    heure_fin : '17:10',
-    'date' : '27-01-2019',
-    barème : 15,
-    tech : 'Omar',
-    teche : 'Mohamed',
-
-  }
-  ,
-  {
-    id : 1,
-    heure_debut : '11:00',
-    heure_fin : '17:10',
-    'date' : '27-01-2019',
-    
-    barème : 15,
-    tech : 'Omar',
-    teche : 'Mohamed',
 
   }
  
   
 ];
+
+//[{id:1,nb-tech :,date :'21/04/2019',heure_debut:'',heure_fin:'',bareme:20,techniciens :[{nom :'moh',nb-heur}]} ]
 
 class App extends Component {
   render() {
