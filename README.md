@@ -2,8 +2,8 @@
  > This component is four display a table of data as a bill 
 
 
-### Demo  [Facture](https://gallant-hodgkin-cebe88.netlify.com/)
-n
+### Demo  [Facture](https://modest-lamarr-34f25a.netlify.com/)
+
 ##  Exemple :
 
 ```
