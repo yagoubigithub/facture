@@ -220,7 +220,7 @@ class Facture extends Component {
     const keys = Object.keys(this.state.data[0]);
     return (
       <React.Fragment>
-      <AppBar position="static" color="default">
+      <AppBar position="static" color="primary">
         <Toolbar>
           <Typography variant="h6" color="inherit">
             Facture
@@ -228,21 +228,22 @@ class Facture extends Component {
           <div style={{flexGrow : 1}}/>
           <form>
           {this.state.selectedValue.length > 0 ? (
-            <Button onClick={this.showMultiItem}>
+            <Button color="inherit"onClick={this.showMultiItem}>
               
-              <Typography variant="caption" style={{margin : 2}}>Afficher les détails</Typography>
+              <Typography color="inherit" variant="caption" style={{margin : 2}}>Afficher les détails</Typography>
             <ImportContacts />
             </Button>
           ) : null}
-          <Button id="print-btn" onClick={this.Imprission}>
+          <Button color="inherit" id="print-btn" onClick={this.Imprission}>
             
-            <Typography variant="caption" style={{margin : 2}}>Imprimer tout</Typography>
+            <Typography color="inherit" variant="caption" style={{margin : 2}}>Imprimer tout</Typography>
             <Print />
           </Button>
           
         </form>
         </Toolbar>
       </AppBar>
+      <br />
        
         <div id="facture">
           <Paper>
@@ -318,7 +319,7 @@ class Facture extends Component {
             </span>
             <br />
             <span className="ttc-htc" dir="ltr">
-              Montant TVA : {this.state.tva} £
+              Montant TVA : {(this.state.totale * (this.props.tva / 100 )).toFixed(2)} £
             </span>
           </div>
         </div>
