@@ -23,6 +23,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import AppBar from '@material-ui/core/AppBar';
 
 import { ImportContacts, Close } from "@material-ui/icons";
 import {
@@ -31,7 +32,8 @@ import {
   CircularProgress,
   ExpansionPanelDetails,
   DialogContent,
-  DialogActions
+  DialogActions,
+  Button
 } from "@material-ui/core";
 
 function printIt(table) {
@@ -189,7 +191,7 @@ class Facture extends Component {
               Temps de fin du déplacement :{item.heure_fin}
               <br />
               Temps de déplacement :
-              {this.calculTemps(item.heure_debut, item.heure_fin)}
+              {item.techniciens[i].nb_heur}
               <br />
             </Typography>
           </ExpansionPanelDetails>
@@ -218,16 +220,30 @@ class Facture extends Component {
     const keys = Object.keys(this.state.data[0]);
     return (
       <React.Fragment>
-        <form>
-          <IconButton id="print-btn" onClick={this.Imprission}>
-            <Print />
-          </IconButton>
+      <AppBar position="static" color="default">
+        <Toolbar>
+          <Typography variant="h6" color="inherit">
+            Facture
+          </Typography>
+          <div style={{flexGrow : 1}}/>
+          <form>
           {this.state.selectedValue.length > 0 ? (
-            <IconButton onClick={this.showMultiItem}>
-              <ImportContacts />
-            </IconButton>
+            <Button onClick={this.showMultiItem}>
+              
+              <Typography variant="caption" style={{margin : 2}}>Afficher les détails</Typography>
+            <ImportContacts />
+            </Button>
           ) : null}
+          <Button id="print-btn" onClick={this.Imprission}>
+            
+            <Typography variant="caption" style={{margin : 2}}>Imprimer tout</Typography>
+            <Print />
+          </Button>
+          
         </form>
+        </Toolbar>
+      </AppBar>
+       
         <div id="facture">
           <Paper>
             <Table>

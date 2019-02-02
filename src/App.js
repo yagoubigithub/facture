@@ -12,14 +12,17 @@ const data = [
     barème : 20,
     techniciens : [{
       nom : "yagoubi",
-      prenom : "AEK"
+      prenom : "AEK",
+      nb_heur : '2:30'
     },
     {
       nom : "Rahili",
       prenom : "AEK",
+      nb_heur : '2:30'
     }, {
       nom : "Yagoubi",
       prenom : "AEK",
+      nb_heur : '2:30'
      
     }]
 
@@ -34,11 +37,13 @@ const data = [
     barème : 30,
     techniciens : [{
       nom : "Sedik",
-      prenom : "Ilyes"
+      prenom : "Ilyes",
+      nb_heur : '2:30'
     },
     {
       nom : "rahili",
       prenom : "abdelhadi",
+      nb_heur : '2:30'
      
     }]
 
