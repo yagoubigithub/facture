@@ -1,5 +1,5 @@
  # Facture
- > This component is four display a table of data as a bill 
+ > This component is for display a table of data as a bill 
 
 
 ### Demo  [Facture](https://modest-lamarr-34f25a.netlify.com/)
