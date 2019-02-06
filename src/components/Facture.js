@@ -90,12 +90,7 @@ class Facture extends Component {
     });
     return a;
   }
-  sortTime = (data) => {
-    const a  = data.sort(function(a,b){
-      return new Date( '1970/01/01 ' +b.date) - new Date('1970/01/01 ' +a.date);
-    });
-    return a;
-  }
+ 
   sortDicimal = (label) => {
     if(label === "tarif"){
       this.setState({sortedLabele :  "tarif"});
@@ -109,8 +104,10 @@ class Facture extends Component {
         this.setState({upDown : <ArrowUpward />});
         this.setState({sortDirection : "desc"});
       }else{
-        const data = [...this.state.data];
-        
+        const d = [...this.state.data];
+        const data = d.sort(function(a,b){
+          return b["barème"] - a["barème"];
+        });
         data.reverse();
         this.setState({data});
         this.setState({upDown : <ArrowDownward />});
@@ -128,37 +125,87 @@ class Facture extends Component {
         this.setState({upDown : <ArrowUpward />});
         this.setState({sortDirection : "desc"});
       }else{
-        const data = [...this.state.data];
+        const d = [...this.state.data];
+        const data = d.sort(function(a,b){
+          return b["somme"] - a["somme"];
+        });
         
         data.reverse();
         this.setState({data});
         this.setState({upDown : <ArrowDownward />});
         this.setState({sortDirection : "asc"});
       }
+    }else if (label === "heure_fin"){
+      this.setState({sortedLabele :  "heure_fin"});
+      if(this.state.sortDirection === "asc"){
+        const d = [...this.state.data];
+        const data =  d.sort(function(a,b){
+          return new Date( '1970/01/01 ' +b.heure_fin) - new Date('1970/01/01 ' +a.heure_fin);
+        });
+        
+        this.setState({data});
+        this.setState({upDown : <ArrowUpward />});
+        this.setState({sortDirection : "desc"});
+      }else{
+        const d = [...this.state.data];
+        const data =  d.sort(function(a,b){
+          return new Date( '1970/01/01 ' +b.heure_fin) - new Date('1970/01/01 ' +a.heure_fin);
+        });
+        data.reverse();
+        this.setState({data});
+        this.setState({upDown : <ArrowDownward />});
+        this.setState({sortDirection : "asc"});
+      } 
+    }else if (label === "heure_debut"){
+      this.setState({sortedLabele :  "heure_debut"});
+      if(this.state.sortDirection === "asc"){
+        const d = [...this.state.data];
+        const data =  d.sort(function(a,b){
+          return new Date( '1970/01/01 ' +b.heure_debut) - new Date('1970/01/01 ' +a.heure_debut);
+        });
+        
+        this.setState({data});
+        this.setState({upDown : <ArrowUpward />});
+        this.setState({sortDirection : "desc"});
+      }else{
+        const d = [...this.state.data];
+        const data =  d.sort(function(a,b){
+          return new Date( '1970/01/01 ' +b.heure_debut) - new Date('1970/01/01 ' +a.heure_debut);
+        });
+        data.reverse();
+        this.setState({data});
+        this.setState({upDown : <ArrowDownward />});
+        this.setState({sortDirection : "asc"});
+      } 
+    }//nb_tech
+
+
+    else if (label === "nb_tech"){
+      this.setState({sortedLabele :  "nb_tech"});
+      if(this.state.sortDirection === "asc"){
+        const d = [...this.state.data];
+        const data =  d.sort(function(a,b){
+          return b.nb_tech - a.nb_tech;
+        });
+        
+        this.setState({data});
+        this.setState({upDown : <ArrowUpward />});
+        this.setState({sortDirection : "desc"});
+      }else{
+        const d = [...this.state.data];
+        const data =  d.sort(function(a,b){
+          return b.nb_tech - a.nb_tech;
+        });
+        data.reverse();
+        this.setState({data});
+        this.setState({upDown : <ArrowDownward />});
+        this.setState({sortDirection : "asc"});
+      }
     }
+
    
   }
 
-  sortTarif = () =>{
-    this.setState({sortedLabele :  "tarif"});
-    if(this.state.sortDirection === "asc"){
-      const d = [...this.state.data];
-      const data = d.sort(function(a,b){
-        return b["barème"] - a["barème"];
-      });
-      
-      this.setState({data});
-      this.setState({upDown : <ArrowUpward />});
-      this.setState({sortDirection : "desc"});
-    }else{
-      const data = [...this.state.data];
-      
-      data.reverse();
-      this.setState({data});
-      this.setState({upDown : <ArrowDownward />});
-      this.setState({sortDirection : "asc"});
-    }
-  }
   sortOnDate = () =>{
     this.setState({sortedLabele :  "date"})
     if(this.state.sortDirection === "asc"){
@@ -466,21 +513,27 @@ class Facture extends Component {
                   </TableCell>
 
                   <TableCell>
-                    <Typography style={{ color: "white" }} variant="h6">
+                    <Typography style={{ color: "white" }} variant="h6" onClick={()=>this.sortDicimal("nb_tech")}>
                       Nombre Techniciens
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography style={{ color: "white" }} variant="h6">
-                      Heure Début
-                      {this.state.sortedLabele === "prix" ?<IconButton color="inherit" >
+                      {this.state.sortedLabele === "nb_tech" ?<IconButton color="inherit" >
                       {this.state.upDown}
                     </IconButton>: null}
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography style={{ color: "white" }} variant="h6">
+                    <Typography style={{ color: "white" }} variant="h6" onClick={()=>this.sortDicimal("heure_debut")}>
+                      Heure Début
+                      {this.state.sortedLabele === "heure_debut" ?<IconButton color="inherit" >
+                      {this.state.upDown}
+                    </IconButton>: null}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography style={{ color: "white" }} variant="h6" onClick={()=>this.sortDicimal("heure_fin")}>
                       Heure Fin
+                      {this.state.sortedLabele === "heure_fin" ?<IconButton color="inherit" >
+                      {this.state.upDown}
+                    </IconButton>: null}
                     </Typography>
                   </TableCell>
                   <TableCell>
