@@ -3,12 +3,12 @@ import Facture from "./components/Facture";
 
 const data = [
   {
-    id: 0,
-    nb_tech: 3,
+    id: 30,
+    
     heure_debut: "08:15",
     heure_fin: "13:00",
-    date: "27-01-2019",
-    barème: 20,
+    date: "2015-03-25",
+    barème: 40,
     techniciens: [
       {
         nom: "yagoubi",
@@ -73,12 +73,17 @@ const data = [
   },
   {
     id: 1,
-    nb_tech: 1,
+   
     heure_debut: "08:15",
     heure_fin: "13:35",
-    date: "27-01-2019",
-    barème: 30,
+    date: "2015-03-23",
+    barème: 140,
     techniciens: [
+      {
+        nom: "Sedik",
+        prenom: "Ilyes",
+        nb_heur: "2:30"
+      },
       {
         nom: "Sedik",
         prenom: "Ilyes",
@@ -107,10 +112,10 @@ const data = [
   },
   {
     id: 1,
-    nb_tech: 1,
+
     heure_debut: "08:15",
-    heure_fin: "13:35",
-    date: "27-01-2019",
+    heure_fin: "13:50",
+    date: "2015-03-29",
     barème: 30,
     techniciens: [
       {
@@ -144,7 +149,11 @@ const data = [
 
 //[{id:1,nb-tech :,date :'21/04/2019',heure_debut:'',heure_fin:'',bareme:20,techniciens :[{nom :'moh',nb-heur}]} ]
 
+
 class App extends Component {
+
+  
+
   render() {
     return (
       <div>

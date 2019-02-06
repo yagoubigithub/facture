@@ -25,7 +25,7 @@ import { lighten } from "@material-ui/core/styles/colorManipulator";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import AppBar from "@material-ui/core/AppBar";
 
-import { ImportContacts, Close, Build, Group } from "@material-ui/icons";
+import { ImportContacts, Close, Build, Group,ArrowUpward,ArrowDownward } from "@material-ui/icons";
 import {
   ExpansionPanel,
   ExpansionPanelSummary,
@@ -78,11 +78,38 @@ class Facture extends Component {
     selectedValue: [],
     isSelectedAll: false,
     openDialogPrintItem: false,
-    dialogTitle: "Liste des Techniciens"
+    dialogTitle: "Liste des Techniciens",
+    sortDirection : "desc",
+    upDown : <ArrowUpward />
   };
 
+  sortDate = (data) => {
+    const a  = data.sort(function(a,b){
+      return new Date(b.date) - new Date(a.date);
+    });
+    return a;
+  }
+  sortOnDate = () =>{
+    if(this.state.sortDirection === "asc"){
+      const data = [...this.state.data];
+      this.sortDate(data);
+      this.setState({data});
+      this.setState({upDown : <ArrowUpward />});
+      this.setState({sortDirection : "desc"});
+    }else{
+      const data = [...this.state.data];
+      
+      data.reverse();
+      this.setState({data});
+      this.setState({upDown : <ArrowDownward />});
+      this.setState({sortDirection : "asc"});
+    }
+
+  }
   componentWillMount = () => {
-    const d = this.props.data;
+    const d = this.sortDate(this.props.data);
+    
+
     for (let i = 0; i < d.length; i++) {
       this.setState({ [`checkboxSelected-${i}`]: false });
     }
@@ -382,7 +409,11 @@ class Facture extends Component {
                   <TableCell>
                     <Typography style={{ color: "white" }} variant="h6">
                       Date
+                      <IconButton color="inherit" onClick={this.sortOnDate}>
+                      {this.state.upDown}
+                    </IconButton>
                     </Typography>
+                    
                   </TableCell>
                   <TableCell>
                     <Typography style={{ color: "white" }} variant="h6">
@@ -414,6 +445,10 @@ class Facture extends Component {
                           checked={this.state[`checkboxSelected-${index}`]}
                           onChange={() => this.checkboxChange(index, item)}
                         />
+                      </TableCell>
+
+                      <TableCell >
+                        {item["techniciens"].length}
                       </TableCell>
                       {keys.map((key, index) => {
                         if (
