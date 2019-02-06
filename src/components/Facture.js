@@ -80,7 +80,8 @@ class Facture extends Component {
     openDialogPrintItem: false,
     dialogTitle: "Liste des Techniciens",
     sortDirection : "desc",
-    upDown : <ArrowUpward />
+    upDown : <ArrowUpward />,
+    sortedLabele :  "date"
   };
 
   sortDate = (data) => {
@@ -89,7 +90,77 @@ class Facture extends Component {
     });
     return a;
   }
+  sortTime = (data) => {
+    const a  = data.sort(function(a,b){
+      return new Date( '1970/01/01 ' +b.date) - new Date('1970/01/01 ' +a.date);
+    });
+    return a;
+  }
+  sortDicimal = (label) => {
+    if(label === "tarif"){
+      this.setState({sortedLabele :  "tarif"});
+      if(this.state.sortDirection === "asc"){
+        const d = [...this.state.data];
+        const data = d.sort(function(a,b){
+          return b["barème"] - a["barème"];
+        });
+        
+        this.setState({data});
+        this.setState({upDown : <ArrowUpward />});
+        this.setState({sortDirection : "desc"});
+      }else{
+        const data = [...this.state.data];
+        
+        data.reverse();
+        this.setState({data});
+        this.setState({upDown : <ArrowDownward />});
+        this.setState({sortDirection : "asc"});
+      }
+    }else if(label === "prix"){
+      this.setState({sortedLabele :  "prix"});
+      if(this.state.sortDirection === "asc"){
+        const d = [...this.state.data];
+        const data = d.sort(function(a,b){
+          return b["somme"] - a["somme"];
+        });
+        
+        this.setState({data});
+        this.setState({upDown : <ArrowUpward />});
+        this.setState({sortDirection : "desc"});
+      }else{
+        const data = [...this.state.data];
+        
+        data.reverse();
+        this.setState({data});
+        this.setState({upDown : <ArrowDownward />});
+        this.setState({sortDirection : "asc"});
+      }
+    }
+   
+  }
+
+  sortTarif = () =>{
+    this.setState({sortedLabele :  "tarif"});
+    if(this.state.sortDirection === "asc"){
+      const d = [...this.state.data];
+      const data = d.sort(function(a,b){
+        return b["barème"] - a["barème"];
+      });
+      
+      this.setState({data});
+      this.setState({upDown : <ArrowUpward />});
+      this.setState({sortDirection : "desc"});
+    }else{
+      const data = [...this.state.data];
+      
+      data.reverse();
+      this.setState({data});
+      this.setState({upDown : <ArrowDownward />});
+      this.setState({sortDirection : "asc"});
+    }
+  }
   sortOnDate = () =>{
+    this.setState({sortedLabele :  "date"})
     if(this.state.sortDirection === "asc"){
       const data = [...this.state.data];
       this.sortDate(data);
@@ -106,6 +177,8 @@ class Facture extends Component {
     }
 
   }
+
+ 
   componentWillMount = () => {
     const d = this.sortDate(this.props.data);
     
@@ -115,6 +188,7 @@ class Facture extends Component {
     }
     let totale = 0;
     const data = d.map(item => {
+      item.nb_tech = item.techniciens.length;
       const mils_fin = Date.parse("July 21, 1983 " + item["heure_fin"]);
       const mils_debut = Date.parse("July 21, 1983 " + item["heure_debut"]);
       const somme = (
@@ -399,6 +473,9 @@ class Facture extends Component {
                   <TableCell>
                     <Typography style={{ color: "white" }} variant="h6">
                       Heure Début
+                      {this.state.sortedLabele === "prix" ?<IconButton color="inherit" >
+                      {this.state.upDown}
+                    </IconButton>: null}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -407,22 +484,28 @@ class Facture extends Component {
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography style={{ color: "white" }} variant="h6">
+                    <Typography style={{ color: "white" }} variant="h6" onClick={this.sortOnDate}>
                       Date
-                      <IconButton color="inherit" onClick={this.sortOnDate}>
+                      {this.state.sortedLabele === "date" ?<IconButton color="inherit" >
                       {this.state.upDown}
-                    </IconButton>
+                    </IconButton>: null}
                     </Typography>
                     
                   </TableCell>
                   <TableCell>
-                    <Typography style={{ color: "white" }} variant="h6">
+                    <Typography style={{ color: "white" }} variant="h6"  onClick={()=>this.sortDicimal("tarif")}>
                       Tarif
+                      {this.state.sortedLabele === "tarif" ?<IconButton color="inherit" >
+                      {this.state.upDown}
+                    </IconButton>: null}
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography style={{ color: "white" }} variant="h6">
+                    <Typography style={{ color: "white" }} variant="h6" onClick={()=>this.sortDicimal("prix")}>
                       Prix
+                      {this.state.sortedLabele === "prix" ?<IconButton color="inherit" >
+                      {this.state.upDown}
+                    </IconButton>: null}
                     </Typography>
                   </TableCell>
 
@@ -448,20 +531,24 @@ class Facture extends Component {
                       </TableCell>
 
                       <TableCell >
-                        {item["techniciens"].length}
+                        {item["nb_tech"]}
                       </TableCell>
-                      {keys.map((key, index) => {
-                        if (
-                          key !== "techniciens" &&
-                          key !== "consommable" &&
-                          key !== "id"
-                        )
-                          return (
-                            <TableCell key={`${item[key]}-${index}`}>
-                              {item[key]}
-                            </TableCell>
-                          );
-                      })}
+                      <TableCell >
+                        {item["heure_debut"]}
+                      </TableCell>
+                      <TableCell >
+                        {item["heure_fin"]}
+                      </TableCell>
+                      <TableCell >
+                        {item["date"]}
+                      </TableCell>
+                      <TableCell >
+                        {item["barème"]}
+                      </TableCell>
+                      <TableCell >
+                        {item["somme"]}
+                      </TableCell>
+
 
                       <TableCell
                         key={`showResource-${index}`}
