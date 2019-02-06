@@ -24,7 +24,51 @@ const data = [
         nom: "Yagoubi",
         prenom: "AEK",
         nb_heur: "2:30"
+      },
+      {
+        nom: "yagoubi",
+        prenom: "AEK",
+        nb_heur: "2:30"
+      },
+      {
+        nom: "Rahili",
+        prenom: "AEK",
+        nb_heur: "2:30"
+      },
+      {
+        nom: "Yagoubi",
+        prenom: "AEK",
+        nb_heur: "2:30"
+      },
+      {
+        nom: "yagoubi",
+        prenom: "AEK",
+        nb_heur: "2:30"
+      },
+      {
+        nom: "Rahili",
+        prenom: "AEK",
+        nb_heur: "2:30"
+      },
+      {
+        nom: "Yagoubi",
+        prenom: "AEK",
+        nb_heur: "2:30"
       }
+    ],
+    consommable : [
+
+      {
+        article : "Disque 1To",
+        qte : 1,
+        cout : 120.5
+      },
+      {
+        article : "Cable Rj45",
+        qte : 4,
+        cout : 10
+      }
+
     ]
   },
   {
@@ -45,8 +89,57 @@ const data = [
         prenom: "abdelhadi",
         nb_heur: "2:30"
       }
+    ],
+    consommable : [
+
+      {
+        article : "Disque 1To",
+        qte : 1,
+        cout : 120.5
+      },
+      {
+        article : "Cable Rj45",
+        qte : 4,
+        cout : 10
+      }
+
     ]
-  }
+  },
+  {
+    id: 1,
+    nb_tech: 1,
+    heure_debut: "08:15",
+    heure_fin: "13:35",
+    date: "27-01-2019",
+    barème: 30,
+    techniciens: [
+      {
+        nom: "Sedik",
+        prenom: "Ilyes",
+        nb_heur: "2:30"
+      },
+      {
+        nom: "rahili",
+        prenom: "abdelhadi",
+        nb_heur: "2:30"
+      }
+    ],
+    consommable : [
+
+      {
+        article : "Disque 1To",
+        qte : 1,
+        cout : 120.5
+      },
+      {
+        article : "Cable Rj45",
+        qte : 4,
+        cout : 10
+      }
+
+    ]
+  },
+  
 ];
 
 //[{id:1,nb-tech :,date :'21/04/2019',heure_debut:'',heure_fin:'',bareme:20,techniciens :[{nom :'moh',nb-heur}]} ]

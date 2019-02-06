@@ -23,9 +23,9 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import AppBar from '@material-ui/core/AppBar';
+import AppBar from "@material-ui/core/AppBar";
 
-import { ImportContacts, Close } from "@material-ui/icons";
+import { ImportContacts, Close, Build, Group } from "@material-ui/icons";
 import {
   ExpansionPanel,
   ExpansionPanelSummary,
@@ -42,19 +42,23 @@ function printIt(table) {
   win.document.open();
   win.document.write("<" + "html" + "><" + "body" + ">");
   win.document.write('<table style="width:100%;border : 1px solid"><tr>');
-  Object.keys(table[0]).map(key => {
-    if(key !== "techniciens")
-    win.document.write('<th style="border : 1px solid">' + key + "</th>");
-  });
+  win.document.write('<th style="border : 1px solid">Nombre Techniciens</th>');
+  win.document.write('<th style="border : 1px solid">Heure Début</th>');
+  win.document.write('<th style="border : 1px solid">Heure Fin  </th>');
+  win.document.write('<th style="border : 1px solid">Date</th>');
+  win.document.write('<th style="border : 1px solid">Tarif</th>');
+  win.document.write('<th style="border : 1px solid">Prix</th>');
+
+ 
   win.document.write("</tr>");
   table.map(item => {
     win.document.write("<tr>");
 
     Object.keys(table[0]).map(key => {
-      if(key !== "techniciens")
-      win.document.write(
-        '<td style="text-align : center">' + item[key] + "</td>"
-      );
+      if (key !== "techniciens" && key !== "id" && key !== "consommable")
+        win.document.write(
+          '<td style="text-align : center;border :1px solid rgba(0,0,0,0.5)">' + item[key] + "</td>"
+        );
     });
 
     win.document.write("</tr>");
@@ -73,7 +77,8 @@ class Facture extends Component {
     tva: 0,
     selectedValue: [],
     isSelectedAll: false,
-    openDialogPrintItem: false
+    openDialogPrintItem: false,
+    dialogTitle: "Liste des Techniciens"
   };
 
   componentWillMount = () => {
@@ -96,15 +101,6 @@ class Facture extends Component {
     console.log(totale);
     this.setState({ totale });
     this.setState({ data });
-    const colors = [];
-    for (let i = 0; i < data.length; i++) {
-      colors.push(
-        randomcolor({
-          luminosity: "light"
-        })
-      );
-    }
-    this.setState({ colors });
   };
 
   checkboxChange = (index, item) => {
@@ -162,13 +158,48 @@ class Facture extends Component {
     const min = Math.floor((time % (1000 * 60 * 60)) / 1000 / 60);
     return hour + ":" + min;
   };
-  showItem = (items) => {
+  showItem = items => {
     const myItems = items;
-    this.setState({myItems});
+    this.setState({ myItems });
     const dialogContentPrintItem = [];
-    items.map(item =>{
-       for (let i = 0; i < item.nb_tech; i++) {
+    this.setState({ dialogTitle: "Liste des Techniciens" });
+    items.map((item, index) => {
+      dialogContentPrintItem.push(<hr />);
+      dialogContentPrintItem.push(<Typography variant="subheading" key ={index}>Déplacement  de date : {item.date}</Typography>)
+      
+      //   for (let i = 0; i < item.nb_tech; i++) {
       dialogContentPrintItem.push(
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Nom</TableCell>
+              <TableCell align="right">Prénom</TableCell>
+              <TableCell align="right">Date de déplacement</TableCell>
+              <TableCell align="right">Heure de début du déplacement</TableCell>
+              <TableCell align="right">Heure de fin du déplacement</TableCell>
+
+              <TableCell align="right">Temps</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {item.techniciens.map((row, index) => (
+              <TableRow  key={"techniciens" + index}>
+                <TableCell component="th" scope="row">
+                  {row.nom}
+                </TableCell>
+                <TableCell align="right">{row.prenom}</TableCell>
+
+                <TableCell align="right">{item.date}</TableCell>
+                <TableCell align="right">{item.heure_debut}</TableCell>
+                <TableCell align="right">{item.heure_fin}</TableCell>
+
+                <TableCell align="right">{row.nb_heur}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+
+        /*
         <ExpansionPanel
           key={i + "ExpansionPanel" + item.nb_tech}
           style={{ minWidth: 500 }}
@@ -195,19 +226,69 @@ class Facture extends Component {
               <br />
             </Typography>
           </ExpansionPanelDetails>
-        </ExpansionPanel>
+        </ExpansionPanel>*/
       );
-    }
+      //}
     });
-   
-    
+
     this.setState({ dialogContentPrintItem });
     this.openDialogPrintItemFunc();
   };
-  showMultiItem = () =>{
+  showMultiItem = (list) => {
+    if(list === "Techniciens")
     this.showItem(this.state.selectedValue);
-  }
+    else{
+      this.showResource(this.state.selectedValue);
+    }
+  };
 
+  showResource = items => {
+    const myItems = items;
+    this.setState({ myItems });
+    this.setState({ dialogTitle: "Liste des Ressource" });
+    const dialogContentPrintItem = [];
+    
+    let totalCout = 0;
+    items.map((item,index) => {
+      dialogContentPrintItem.push(<hr />);
+      dialogContentPrintItem.push(<Typography variant="subheading" key ={index}>Déplacement  de date : {item.date}</Typography>)
+      dialogContentPrintItem.push(
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Article</TableCell>
+              <TableCell align="right">Quantité</TableCell>
+              <TableCell align="right">Coût</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {item.consommable.map((row, index) => {
+              totalCout += row.qte * row.cout;
+              return (
+                <TableRow key={"consommable" + index}>
+                  <TableCell component="th" scope="row">
+                    {row.article}
+                  </TableCell>
+                  <TableCell align="right">{row.qte}</TableCell>
+                  <TableCell align="right">{row.cout} €</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      );
+     
+    });
+    dialogContentPrintItem.push(
+      <div>
+        <br />
+        <hr />
+        <Typography variant="title">Totale : {totalCout} €</Typography>
+      </div>
+    );
+    this.setState({ dialogContentPrintItem });
+    this.openDialogPrintItemFunc();
+  };
   Imprission = () => {
     printIt(this.props.data);
     console.log(this.props.data);
@@ -215,58 +296,107 @@ class Facture extends Component {
   };
   printItem = () => {
     printIt(this.state.myItems);
-  }
+  };
   render() {
     const keys = Object.keys(this.state.data[0]);
     return (
       <React.Fragment>
-      <AppBar position="static" color="primary">
-        <Toolbar>
-          <Typography variant="h6" color="inherit">
-            Facture
-          </Typography>
-          <div style={{flexGrow : 1}}/>
-          <form>
-          {this.state.selectedValue.length > 0 ? (
-            <Button color="inherit"onClick={this.showMultiItem}>
-              
-              <Typography color="inherit" variant="caption" style={{margin : 2}}>Afficher les détails</Typography>
-            <ImportContacts />
-            </Button>
-          ) : null}
-          <Button color="inherit" id="print-btn" onClick={this.Imprission}>
-            
-            <Typography color="inherit" variant="caption" style={{margin : 2}}>Imprimer tout</Typography>
-            <Print />
-          </Button>
-          
-        </form>
-        </Toolbar>
-      </AppBar>
-      <br />
-       
-        <div id="facture">
+        <AppBar
+          position="static"
+          style={{ backgroundColor: "#000" }}
+          color="primary"
+        >
+          <Toolbar>
+            <Typography variant="h6" color="inherit">
+              Facture
+            </Typography>
+            <div style={{ flexGrow: 1 }} />
+            <form>
+              {this.state.selectedValue.length > 0 ? (
+                <Button color="inherit" onClick={()=>this.showMultiItem("Techniciens")}>
+                  <Typography
+                    color="inherit"
+                    variant="caption"
+                    style={{ margin: 2 }}
+                  >
+                    Afficher Liste des Techniciens
+                  </Typography>
+                  <Group />
+                </Button>
+              ) : null}
+              {this.state.selectedValue.length > 0 ? (
+                <Button color="inherit" onClick={()=>this.showMultiItem("Ressource")}>
+                  <Typography
+                    color="inherit"
+                    variant="caption"
+                    style={{ margin: 2 }}
+                  >
+                    Afficher Liste des Ressource
+                  </Typography>
+                  <Group />
+                </Button>
+              ) : null}
+              <Button color="inherit" id="print-btn" onClick={this.Imprission}>
+                <Typography
+                  color="inherit"
+                  variant="caption"
+                  style={{ margin: 2 }}
+                >
+                  Imprimer tout
+                </Typography>
+                <Print />
+              </Button>
+            </form>
+          </Toolbar>
+        </AppBar>
+        <br />
+
+        <div id="facture" style={{ padding: 10 }}>
           <Paper>
             <Table>
-              <TableHead style={{ backgroundColor: "#F2F2F2" }}>
+              <TableHead style={{ backgroundColor: "#000" }}>
                 <TableRow>
                   <TableCell padding="checkbox">
                     <Checkbox
+                      style={{ backgroundColor: "#FFF" }}
                       onChange={this.handelSelectedAll}
                       checked={this.state.isSelectedAll}
                     />
                   </TableCell>
-                  {keys.map(key => {
-                    if (key !== "techniciens")
-                      return (
-                        <TableCell key={key}>
-                          <Typography variant="h6">{key}</Typography>
-                        </TableCell>
-                      );
-                  })}
-                  <TableCell key="montrer_details" padding="checkbox">
-                    {" "}
+
+                  <TableCell>
+                    <Typography style={{ color: "white" }} variant="h6">
+                      Nombre Techniciens
+                    </Typography>
                   </TableCell>
+                  <TableCell>
+                    <Typography style={{ color: "white" }} variant="h6">
+                      Heure Début
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography style={{ color: "white" }} variant="h6">
+                      Heure Fin
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography style={{ color: "white" }} variant="h6">
+                      Date
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography style={{ color: "white" }} variant="h6">
+                      Tarif
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography style={{ color: "white" }} variant="h6">
+                      Prix
+                    </Typography>
+                  </TableCell>
+
+                  <TableCell padding="checkbox"> </TableCell>
+                  <TableCell padding="checkbox"> </TableCell>
                 </TableRow>
               </TableHead>
 
@@ -274,7 +404,9 @@ class Facture extends Component {
                 {this.state.data.map((item, index) => {
                   const table = (
                     <TableRow
-                      style={{ backgroundColor: this.state.colors[index] }}
+                      style={{
+                        backgroundColor: index % 2 !== 0 ? "#F2F2F2" : "#FFF"
+                      }}
                       key={`row-${index}`}
                     >
                       <TableCell key={`checkbox-${index}`} padding="checkbox">
@@ -284,7 +416,11 @@ class Facture extends Component {
                         />
                       </TableCell>
                       {keys.map((key, index) => {
-                        if (key !== "techniciens")
+                        if (
+                          key !== "techniciens" &&
+                          key !== "consommable" &&
+                          key !== "id"
+                        )
                           return (
                             <TableCell key={`${item[key]}-${index}`}>
                               {item[key]}
@@ -293,11 +429,19 @@ class Facture extends Component {
                       })}
 
                       <TableCell
-                        key={`montrer_details-${index}`}
+                        key={`showResource-${index}`}
+                        padding="checkbox"
+                      >
+                        <IconButton onClick={() => this.showResource([item])}>
+                          <Build />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell
+                        key={`afficher_details-${index}`}
                         padding="checkbox"
                       >
                         <IconButton onClick={() => this.showItem([item])}>
-                          <ImportContacts />
+                          <Group />
                         </IconButton>
                       </TableCell>
                     </TableRow>
@@ -309,31 +453,52 @@ class Facture extends Component {
           </Paper>
 
           <div dir="rtl">
-            <span className="ttc-htc" dir="ltr">
-              Montant HT :{" "}
-              {this.state.totale } £
-            </span>
-            <br />
-            <span className="ttc-htc" dir="ltr">
-              Montant TTC : {(this.state.totale  + (this.state.totale * (this.props.tva / 100 ))).toFixed(2)} £
-            </span>
-            <br />
-            <span className="ttc-htc" dir="ltr">
-              Montant TVA : {(this.state.totale * (this.props.tva / 100 )).toFixed(2)} £
-            </span>
+            <div
+              style={{
+                maxWidth: 250,
+                backgroundColor: "#F2F2F2",
+                display: "flex",
+                flexDirection: "column",
+                marginTop : 10,
+                padding : 5,
+                boxShadow : "1px 1px 4px rgba(0,0,0,0.4)"
+
+              }}
+            >
+              <Typography variant="h6"  dir="ltr">
+                Montant HT : {this.state.totale} €
+              </Typography>
+              
+              <Typography variant="h6"   dir="ltr">
+                Montant TTC :{" "}
+                {(
+                  this.state.totale +
+                  this.state.totale * (this.props.tva / 100)
+                ).toFixed(2)}{" "}
+                €
+              </Typography>
+              
+              <Typography variant="h6" dir="ltr">
+                Montant TVA :{" "}
+                {(this.state.totale * (this.props.tva / 100)).toFixed(2)} €
+              </Typography>
+            </div>
           </div>
         </div>
 
         <Dialog
           open={this.state.openDialogPrintItem}
           onClose={this.handleCloseDialogPrintItem}
+          maxWidth="xl"
         >
           <DialogTitle
-            style={{ padding: 0, marginBottom: 8 ,backgroundColor : "#F2F2F2"}}
+            style={{ padding: 0, marginBottom: 8, backgroundColor: "#F2F2F2" }}
             onClose={this.handleCloseDialogPrintItem}
           >
-            <div style={{display : 'flex',justifyContent: 'space-between'}}>
-            <Typography variant="h5" style={{margin : 8}}>List des Techniciens</Typography>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <Typography variant="h5" style={{ margin: 8 }}>
+                {this.state.dialogTitle}
+              </Typography>
               <IconButton onClick={this.handleCloseDialogPrintItem}>
                 <Close />
               </IconButton>
