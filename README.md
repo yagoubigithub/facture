@@ -2,20 +2,21 @@
  > This component is for display a table of data as a bill 
 
 
-### Demo  [Facture](https://modest-lamarr-34f25a.netlify.com/)
+### Demo  [Facture](https://nervous-villani-7b9073.netlify.com/)
 
 ##  Exemple :
 
 ```
 const data = [
   {
-    id: 0,
-    nb_tech: 3,
-    heure_debut: "08:15",
+    id: 30,
+    
+    heure_debut: "08:10",
     heure_fin: "13:00",
-    date: "27-01-2019",
-    barème: 20,
+    date: "2015-03-25",
+    barème: 40,
     techniciens: [
+    
       {
         nom: "yagoubi",
         prenom: "AEK",
@@ -31,14 +32,67 @@ const data = [
         prenom: "AEK",
         nb_heur: "2:30"
       }
+    ],
+    consommable : [
+
+      {
+        article : "Disque 1To",
+        qte : 1,
+        cout : 120.5
+      },
+      {
+        article : "Cable Rj45",
+        qte : 4,
+        cout : 10
+      }
+
     ]
   },
   {
     id: 1,
-    nb_tech: 1,
-    heure_debut: "08:15",
+   
+    heure_debut: "08:01",
     heure_fin: "13:35",
-    date: "27-01-2019",
+    date: "2015-03-23",
+    barème: 140,
+    techniciens: [
+      {
+        nom: "Sedik",
+        prenom: "Ilyes",
+        nb_heur: "2:30"
+      },
+      {
+        nom: "Sedik",
+        prenom: "Ilyes",
+        nb_heur: "2:30"
+      },
+      {
+        nom: "rahili",
+        prenom: "abdelhadi",
+        nb_heur: "2:30"
+      }
+    ],
+    consommable : [
+
+      {
+        article : "Disque 1To",
+        qte : 1,
+        cout : 120.5
+      },
+      {
+        article : "Cable Rj45",
+        qte : 4,
+        cout : 10
+      }
+
+    ]
+  },
+  {
+    id: 1,
+
+    heure_debut: "08:45",
+    heure_fin: "13:50",
+    date: "2015-03-29",
     barème: 30,
     techniciens: [
       {
@@ -51,9 +105,25 @@ const data = [
         prenom: "abdelhadi",
         nb_heur: "2:30"
       }
+    ],
+    consommable : [
+
+      {
+        article : "Disque 1To",
+        qte : 1,
+        cout : 120.5
+      },
+      {
+        article : "Cable Rj45",
+        qte : 4,
+        cout : 10
+      }
+
     ]
-  }
+  },
+  
 ];
+
 ```
 ```<Facture tva={4} data={data} />```
 ### The props :

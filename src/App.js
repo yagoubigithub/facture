@@ -10,36 +10,7 @@ const data = [
     date: "2015-03-25",
     barème: 40,
     techniciens: [
-      {
-        nom: "yagoubi",
-        prenom: "AEK",
-        nb_heur: "2:30"
-      },
-      {
-        nom: "Rahili",
-        prenom: "AEK",
-        nb_heur: "2:30"
-      },
-      {
-        nom: "Yagoubi",
-        prenom: "AEK",
-        nb_heur: "2:30"
-      },
-      {
-        nom: "yagoubi",
-        prenom: "AEK",
-        nb_heur: "2:30"
-      },
-      {
-        nom: "Rahili",
-        prenom: "AEK",
-        nb_heur: "2:30"
-      },
-      {
-        nom: "Yagoubi",
-        prenom: "AEK",
-        nb_heur: "2:30"
-      },
+    
       {
         nom: "yagoubi",
         prenom: "AEK",
