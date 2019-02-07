@@ -129,18 +129,25 @@ const data = [
 ### The props :
 
 ##### data  : array of object the format of the object  is:
-id : (int)
-nb_tech : (int)
-heure_debut : "hh:mm"
-heure_fin: "hh:mm"
-date: "dd-mm-yyyy",
-barème: (decimal),
-techniciens: [
+**id** : (int)
+**heure_debut** : "hh:mm"
+**heure_fin** : "hh:mm"
+**date**: "dd-mm-yyyy",
+**barème**: (decimal),
+**techniciens**: [
       {
-        nom: (string),
-        prenom: (string),
-        nb_heur: "hh:mm"
-      },...]
+        **nom** : (string),
+        **prenom** : (string),
+        **nb_heur**: "hh:mm"
+      },...],
+**consommable** : [
+    {
+        **article** : (string),
+        **qte** : (int),
+        **cout** : (decimal),
+  },
+{...}
+]
 ##### tva : decimal
 
 
