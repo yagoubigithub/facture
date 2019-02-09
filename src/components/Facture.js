@@ -31,41 +31,8 @@ import {
   Button
 } from "@material-ui/core";
 
-function printIt(table) {
-  var win = window.open();
-  //self.focus();
-  win.document.open();
-  win.document.write("<" + "html" + "><" + "body" + ">");
-  win.document.write('<table style="width:100%;border : 1px solid"><tr>');
-  win.document.write('<th style="border : 1px solid">Nombre Techniciens</th>');
-  win.document.write('<th style="border : 1px solid">Heure Début</th>');
-  win.document.write('<th style="border : 1px solid">Heure Fin  </th>');
-  win.document.write('<th style="border : 1px solid">Date</th>');
-  win.document.write('<th style="border : 1px solid">Tarif</th>');
-  win.document.write('<th style="border : 1px solid">Prix</th>');
 
-  win.document.write("</tr>");
-  table.map(item => {
-    win.document.write("<tr>");
-
-    Object.keys(table[0]).map(key => {
-      if (key !== "techniciens" && key !== "id" && key !== "consommable")
-        win.document.write(
-          '<td style="text-align : center;border :1px solid rgba(0,0,0,0.5)">' +
-            item[key] +
-            "</td>"
-        );
-    });
-
-    win.document.write("</tr>");
-  });
-
-  win.document.write("<" + "/body" + "><" + "/html" + ">");
-  win.document.close();
-  win.print();
-  win.close();
-}
-//[{id:1,nb-tech :,date :'21/04/2019',heure_debut:'',heure_fin:'',bareme:20,techniciens :[{nom :'moh',nb-heur}]} ]
+//[{id:1,nb-tech :,date :'21/04/2019',dh_debut:'',dh_fin:'',bareme:20,techniciens :[{nom :'moh',nb-heur}]} ]
 class Facture extends Component {
   state = {
     htc: 0,
@@ -79,6 +46,70 @@ class Facture extends Component {
     upDown: <ArrowUpward />,
     sortedLabele: "date"
   };
+  printIt = (table) => {
+    var win = window.open();
+    //self.focus();
+    win.document.open();
+    win.document.write("<" + "html" + "><" + "body" + ">");
+    win.document.write("<h2>Facture</h2>");
+    win.document.write('<table style="width:100%;border : 1px solid"><tr>');
+    win.document.write('<th style="border : 1px solid">Nombre Techniciens</th>');
+    win.document.write('<th style="border : 1px solid">Date début</th>');
+    win.document.write('<th style="border : 1px solid">Date Fin</th>');
+    win.document.write('<th style="border : 1px solid">Temps Totale</th>');
+    win.document.write('<th style="border : 1px solid">Tarif</th>');
+    win.document.write('<th style="border : 1px solid"> Coût consommable</th>');
+    win.document.write('<th style="border : 1px solid">Prix</th>');
+  
+    win.document.write("</tr>");
+    table.map(item => {
+      win.document.write("<tr>");
+  
+      win.document.write(
+        '<td style="text-align : center;border :1px solid rgba(0,0,0,0.5)">' +
+          this.toMyFixed(item["nb_tech"]) +
+          "</td>"
+      );
+
+      win.document.write(
+        '<td style="text-align : center;border :1px solid rgba(0,0,0,0.5)">' +
+          this.toMyFixed(item["dh_debut"]) +
+          "</td>"
+      );
+      win.document.write(
+        '<td style="text-align : center;border :1px solid rgba(0,0,0,0.5)">' +
+          this.toMyFixed(item["dh_fin"]) +
+          "</td>"
+      );
+      win.document.write(
+        '<td style="text-align : center;border :1px solid rgba(0,0,0,0.5)">' +
+          this.toMyFixed(item["temps_totale_par_tout_les_techniciens"]) +
+          "</td>"
+      );
+      win.document.write(
+        '<td style="text-align : center;border :1px solid rgba(0,0,0,0.5)">' +
+          this.toMyFixed(item["tarif"]) +
+          "</td>"
+      );
+      win.document.write(
+        '<td style="text-align : center;border :1px solid rgba(0,0,0,0.5)">' +
+          this.toMyFixed(item["cout_consommable"]) +
+          "</td>"
+      );
+      win.document.write(
+        '<td style="text-align : center;border :1px solid rgba(0,0,0,0.5)">' +
+          this.toMyFixed(item["somme"]) +
+          "</td>"
+      );
+  
+      win.document.write("</tr>");
+    });
+  
+    win.document.write("<" + "/body" + "><" + "/html" + ">");
+    win.document.close();
+    win.print();
+    win.close();
+  }
 
   sortDate = data => {
     const a = data.sort(function(a, b) {
@@ -93,7 +124,7 @@ class Facture extends Component {
       if (this.state.sortDirection === "asc") {
         const d = [...this.state.data];
         const data = d.sort(function(a, b) {
-          return b["barème"] - a["barème"];
+          return b["tarif"] - a["tarif"];
         });
 
         this.setState({ data });
@@ -102,7 +133,7 @@ class Facture extends Component {
       } else {
         const d = [...this.state.data];
         const data = d.sort(function(a, b) {
-          return b["barème"] - a["barème"];
+          return b["tarif"] - a["tarif"];
         });
         data.reverse();
         this.setState({ data });
@@ -131,14 +162,14 @@ class Facture extends Component {
         this.setState({ upDown: <ArrowDownward /> });
         this.setState({ sortDirection: "asc" });
       }
-    } else if (label === "heure_fin") {
-      this.setState({ sortedLabele: "heure_fin" });
+    } else if (label === "dh_fin") {
+      this.setState({ sortedLabele: "dh_fin" });
       if (this.state.sortDirection === "asc") {
         const d = [...this.state.data];
         const data = d.sort(function(a, b) {
           return (
-            new Date("1970/01/01 " + b.heure_fin) -
-            new Date("1970/01/01 " + a.heure_fin)
+            new Date("1970/01/01 " + b.dh_fin) -
+            new Date("1970/01/01 " + a.dh_fin)
           );
         });
 
@@ -149,8 +180,8 @@ class Facture extends Component {
         const d = [...this.state.data];
         const data = d.sort(function(a, b) {
           return (
-            new Date("1970/01/01 " + b.heure_fin) -
-            new Date("1970/01/01 " + a.heure_fin)
+            new Date("1970/01/01 " + b.dh_fin) -
+            new Date("1970/01/01 " + a.dh_fin)
           );
         });
         data.reverse();
@@ -158,14 +189,14 @@ class Facture extends Component {
         this.setState({ upDown: <ArrowDownward /> });
         this.setState({ sortDirection: "asc" });
       }
-    } else if (label === "heure_debut") {
-      this.setState({ sortedLabele: "heure_debut" });
+    } else if (label === "dh_debut") {
+      this.setState({ sortedLabele: "dh_debut" });
       if (this.state.sortDirection === "asc") {
         const d = [...this.state.data];
         const data = d.sort(function(a, b) {
           return (
-            new Date("1970/01/01 " + b.heure_debut) -
-            new Date("1970/01/01 " + a.heure_debut)
+            new Date("1970/01/01 " + b.dh_debut) -
+            new Date("1970/01/01 " + a.dh_debut)
           );
         });
 
@@ -176,8 +207,8 @@ class Facture extends Component {
         const d = [...this.state.data];
         const data = d.sort(function(a, b) {
           return (
-            new Date("1970/01/01 " + b.heure_debut) -
-            new Date("1970/01/01 " + a.heure_debut)
+            new Date("1970/01/01 " + b.dh_debut) -
+            new Date("1970/01/01 " + a.dh_debut)
           );
         });
         data.reverse();
@@ -207,7 +238,7 @@ class Facture extends Component {
         this.setState({ upDown: <ArrowDownward /> });
         this.setState({ sortDirection: "asc" });
       }
-    }//cout_consommable
+    } //cout_consommable
     else if (label === "cout_consommable") {
       this.setState({ sortedLabele: "cout_consommable" });
       if (this.state.sortDirection === "asc") {
@@ -230,7 +261,6 @@ class Facture extends Component {
         this.setState({ sortDirection: "asc" });
       }
     }
-
   };
 
   sortOnDate = () => {
@@ -253,27 +283,36 @@ class Facture extends Component {
 
   componentWillMount = () => {
     const d = this.sortDate(this.props.data);
-
+   
     for (let i = 0; i < d.length; i++) {
       this.setState({ [`checkboxSelected-${i}`]: false });
     }
     let totale = 0;
     const data = d.map(item => {
       item.nb_tech = item.techniciens.length;
-      const mils_fin = Date.parse("July 21, 1983 " + item["heure_fin"]);
-      const mils_debut = Date.parse("July 21, 1983 " + item["heure_debut"]);
-      const somme = (
-        (item["barème"] / 60 / 60 / 1000) *
-        (mils_fin - mils_debut)
-      ).toFixed(2);
+      let somme = 0;
+      let temp_totale_par_technicien_min = 0;
+
+      item["techniciens"].map(tech => {
+        const temps = tech.temps.split(":");
+        const timeMin =
+          Number.parseInt(temps[0]) * 60 + Number.parseInt(temps[1]);
+        temp_totale_par_technicien_min += timeMin;
+
+        somme = somme + timeMin * (item["tarif"] / 60);
+      });
+      const temps_totale_par_techniciens_heure = Math.floor(temp_totale_par_technicien_min / 60);
+      const temps_totale_par_techniciens_min = temp_totale_par_technicien_min % 60;
+      item.temps_totale_par_tout_les_techniciens = temps_totale_par_techniciens_heure + ":" + temps_totale_par_techniciens_min;
 
       let cout_consommable = 0;
       item["consommable"].map(a => {
         cout_consommable += a.qte * a.cout;
       });
       item.cout_consommable = cout_consommable;
-      item.somme = Number.parseFloat(somme) + cout_consommable;
+      item.somme = somme + cout_consommable;
       totale = totale + item.somme;
+console.log(item);
       return item;
     });
 
@@ -323,19 +362,7 @@ class Facture extends Component {
   handleCloseDialogPrintItem = () => {
     this.setState({ openDialogPrintItem: !this.state.openDialogPrintItem });
   };
-  calculTemps = (tempsDebut, tempsFin) => {
-    const timePartsDebut = tempsDebut.split(":");
-    const timePartsFin = tempsFin.split(":");
-    console.log(timePartsDebut, timePartsFin);
-    const time =
-      Number.parseInt(timePartsFin[0]) * 60000 * 60 +
-      Number.parseInt(timePartsFin[1]) * 60000 -
-      (Number.parseInt(timePartsDebut[0]) * 60000 * 60 +
-        Number.parseInt(timePartsDebut[1]) * 60000);
-    const hour = Math.floor(time / 1000 / 60 / 60);
-    const min = Math.floor((time % (1000 * 60 * 60)) / 1000 / 60);
-    return hour + ":" + min;
-  };
+
   showItem = items => {
     const myItems = items;
     this.setState({ myItems });
@@ -356,7 +383,7 @@ class Facture extends Component {
             <TableRow>
               <TableCell>Nom</TableCell>
               <TableCell align="right">Prénom</TableCell>
-              <TableCell align="right">Date de déplacement</TableCell>
+
               <TableCell align="right">Heure de début du déplacement</TableCell>
               <TableCell align="right">Heure de fin du déplacement</TableCell>
 
@@ -371,11 +398,10 @@ class Facture extends Component {
                 </TableCell>
                 <TableCell align="right">{row.prenom}</TableCell>
 
-                <TableCell align="right">{item.date}</TableCell>
-                <TableCell align="right">{item.heure_debut}</TableCell>
-                <TableCell align="right">{item.heure_fin}</TableCell>
+                <TableCell align="right">{item.dh_debut}</TableCell>
+                <TableCell align="right">{item.dh_fin}</TableCell>
 
-                <TableCell align="right">{row.nb_heur}</TableCell>
+                <TableCell align="right">{row.temps}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -399,9 +425,9 @@ class Facture extends Component {
               <br />
               Date de déplacement :{item.date}
               <br />
-              Temps de debut du déplacement :{item.heure_debut}
+              Temps de debut du déplacement :{item.dh_debut}
               <br />
-              Temps de fin du déplacement :{item.heure_fin}
+              Temps de fin du déplacement :{item.dh_fin}
               <br />
               Temps de déplacement :
               {item.techniciens[i].nb_heur}
@@ -473,16 +499,31 @@ class Facture extends Component {
     this.setState({ dialogContentPrintItem });
     this.openDialogPrintItemFunc();
   };
+  toMyFixed = decimal =>{
+    if((decimal + "").indexOf(".") !== -1){
+      const d = (decimal+"").split(".");
+      const secondeNumber = d[1][1] || "0"; 
+      const newNumber = d[0] + '.'  + d[1][0] + secondeNumber;
+      return newNumber;
+
+    }else if((decimal + "").indexOf(",") !== -1){
+      const d = (decimal+"").split(",");
+      const secondeNumber = d[1][1] || "0"; 
+      const newNumber = d[0] + '.'  + d[1][0] + secondeNumber;
+      return newNumber;
+    }else{
+      return decimal + "";
+    }
+  }
   Imprission = () => {
-    printIt(this.props.data);
-    console.log(this.props.data);
+    this.printIt(this.props.data);
+
     //window.print();
   };
   printItem = () => {
-    printIt(this.state.myItems);
+    this.printIt(this.state.myItems);
   };
   render() {
-    
     return (
       <React.Fragment>
         <AppBar
@@ -572,10 +613,10 @@ class Facture extends Component {
                     <Typography
                       style={{ color: "white" }}
                       variant="body1"
-                      onClick={() => this.sortDicimal("heure_debut")}
+                      onClick={() => this.sortDicimal("dh_debut")}
                     >
                       Heure Début
-                      {this.state.sortedLabele === "heure_debut" ? (
+                      {this.state.sortedLabele === "dh_debut" ? (
                         <IconButton color="inherit">
                           {this.state.upDown}
                         </IconButton>
@@ -586,10 +627,10 @@ class Facture extends Component {
                     <Typography
                       style={{ color: "white" }}
                       variant="body1"
-                      onClick={() => this.sortDicimal("heure_fin")}
+                      onClick={() => this.sortDicimal("dh_fin")}
                     >
                       Heure Fin
-                      {this.state.sortedLabele === "heure_fin" ? (
+                      {this.state.sortedLabele === "dh_fin" ? (
                         <IconButton color="inherit">
                           {this.state.upDown}
                         </IconButton>
@@ -600,16 +641,18 @@ class Facture extends Component {
                     <Typography
                       style={{ color: "white" }}
                       variant="body1"
-                      onClick={this.sortOnDate}
+                      onClick={() => this.sortDicimal("temps_totale_par_tout_les_techniciens")}
                     >
-                      Date
-                      {this.state.sortedLabele === "date" ? (
+                    
+                      Temps Totale
+                      {this.state.sortedLabele === "temps_totale_par_tout_les_techniciens" ? (
                         <IconButton color="inherit">
                           {this.state.upDown}
                         </IconButton>
                       ) : null}
                     </Typography>
                   </TableCell>
+
                   <TableCell>
                     <Typography
                       style={{ color: "white" }}
@@ -624,6 +667,8 @@ class Facture extends Component {
                       ) : null}
                     </Typography>
                   </TableCell>
+
+                  
                   <TableCell>
                     <Typography
                       style={{ color: "white" }}
@@ -675,13 +720,14 @@ class Facture extends Component {
                       </TableCell>
 
                       <TableCell>{item["nb_tech"]}</TableCell>
-                      <TableCell>{item["heure_debut"]}</TableCell>
-                      <TableCell>{item["heure_fin"]}</TableCell>
-                      <TableCell>{item["date"]}</TableCell>
-                      <TableCell>{item["barème"]}</TableCell>
-                      <TableCell>{item["cout_consommable"]}</TableCell>
+                      <TableCell>{item["dh_debut"]}</TableCell>
+                      <TableCell>{item["dh_fin"]}</TableCell>
+                      <TableCell>{item["temps_totale_par_tout_les_techniciens"]}</TableCell>
+                      
+                      <TableCell>{this.toMyFixed(item["tarif"])}</TableCell>
+                      <TableCell>{this.toMyFixed(item["cout_consommable"])}</TableCell>
 
-                      <TableCell>{item["somme"]}</TableCell>
+                      <TableCell>{this.toMyFixed(item["somme"])}</TableCell>
 
                       <TableCell
                         key={`showResource-${index}`}
@@ -720,21 +766,21 @@ class Facture extends Component {
               }}
             >
               <Typography variant="h6" dir="ltr">
-                Montant HT : {this.state.totale} €
+                Montant HT : {this.toMyFixed(this.state.totale)} €
               </Typography>
 
               <Typography variant="h6" dir="ltr">
                 Montant TTC :{" "}
-                {(
+                {this.toMyFixed(
                   this.state.totale +
                   this.state.totale * (this.props.tva / 100)
-                ).toFixed(2)}{" "}
+                )}{" "}
                 €
               </Typography>
 
               <Typography variant="h6" dir="ltr">
                 Montant TVA :{" "}
-                {(this.state.totale * (this.props.tva / 100)).toFixed(2)} €
+                {this.toMyFixed(this.state.totale * (this.props.tva / 100))} €
               </Typography>
             </div>
           </div>
