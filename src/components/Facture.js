@@ -17,7 +17,13 @@ import IconButton from "@material-ui/core/IconButton";
 
 import AppBar from "@material-ui/core/AppBar";
 
-import { Close, Build, Group,ArrowUpward,ArrowDownward } from "@material-ui/icons";
+import {
+  Close,
+  Build,
+  Group,
+  ArrowUpward,
+  ArrowDownward
+} from "@material-ui/icons";
 import {
   CircularProgress,
   DialogContent,
@@ -38,7 +44,6 @@ function printIt(table) {
   win.document.write('<th style="border : 1px solid">Tarif</th>');
   win.document.write('<th style="border : 1px solid">Prix</th>');
 
- 
   win.document.write("</tr>");
   table.map(item => {
     win.document.write("<tr>");
@@ -46,7 +51,9 @@ function printIt(table) {
     Object.keys(table[0]).map(key => {
       if (key !== "techniciens" && key !== "id" && key !== "consommable")
         win.document.write(
-          '<td style="text-align : center;border :1px solid rgba(0,0,0,0.5)">' + item[key] + "</td>"
+          '<td style="text-align : center;border :1px solid rgba(0,0,0,0.5)">' +
+            item[key] +
+            "</td>"
         );
     });
 
@@ -68,156 +75,184 @@ class Facture extends Component {
     isSelectedAll: false,
     openDialogPrintItem: false,
     dialogTitle: "Liste des Techniciens",
-    sortDirection : "desc",
-    upDown : <ArrowUpward />,
-    sortedLabele :  "date"
+    sortDirection: "desc",
+    upDown: <ArrowUpward />,
+    sortedLabele: "date"
   };
 
-  sortDate = (data) => {
-    const a  = data.sort(function(a,b){
+  sortDate = data => {
+    const a = data.sort(function(a, b) {
       return new Date(b.date) - new Date(a.date);
     });
     return a;
-  }
- 
-  sortDicimal = (label) => {
-    if(label === "tarif"){
-      this.setState({sortedLabele :  "tarif"});
-      if(this.state.sortDirection === "asc"){
+  };
+
+  sortDicimal = label => {
+    if (label === "tarif") {
+      this.setState({ sortedLabele: "tarif" });
+      if (this.state.sortDirection === "asc") {
         const d = [...this.state.data];
-        const data = d.sort(function(a,b){
+        const data = d.sort(function(a, b) {
           return b["barème"] - a["barème"];
         });
-        
-        this.setState({data});
-        this.setState({upDown : <ArrowUpward />});
-        this.setState({sortDirection : "desc"});
-      }else{
+
+        this.setState({ data });
+        this.setState({ upDown: <ArrowUpward /> });
+        this.setState({ sortDirection: "desc" });
+      } else {
         const d = [...this.state.data];
-        const data = d.sort(function(a,b){
+        const data = d.sort(function(a, b) {
           return b["barème"] - a["barème"];
         });
         data.reverse();
-        this.setState({data});
-        this.setState({upDown : <ArrowDownward />});
-        this.setState({sortDirection : "asc"});
+        this.setState({ data });
+        this.setState({ upDown: <ArrowDownward /> });
+        this.setState({ sortDirection: "asc" });
       }
-    }else if(label === "prix"){
-      this.setState({sortedLabele :  "prix"});
-      if(this.state.sortDirection === "asc"){
+    } else if (label === "prix") {
+      this.setState({ sortedLabele: "prix" });
+      if (this.state.sortDirection === "asc") {
         const d = [...this.state.data];
-        const data = d.sort(function(a,b){
+        const data = d.sort(function(a, b) {
           return b["somme"] - a["somme"];
         });
-        
-        this.setState({data});
-        this.setState({upDown : <ArrowUpward />});
-        this.setState({sortDirection : "desc"});
-      }else{
+
+        this.setState({ data });
+        this.setState({ upDown: <ArrowUpward /> });
+        this.setState({ sortDirection: "desc" });
+      } else {
         const d = [...this.state.data];
-        const data = d.sort(function(a,b){
+        const data = d.sort(function(a, b) {
           return b["somme"] - a["somme"];
         });
-        
+
         data.reverse();
-        this.setState({data});
-        this.setState({upDown : <ArrowDownward />});
-        this.setState({sortDirection : "asc"});
+        this.setState({ data });
+        this.setState({ upDown: <ArrowDownward /> });
+        this.setState({ sortDirection: "asc" });
       }
-    }else if (label === "heure_fin"){
-      this.setState({sortedLabele :  "heure_fin"});
-      if(this.state.sortDirection === "asc"){
+    } else if (label === "heure_fin") {
+      this.setState({ sortedLabele: "heure_fin" });
+      if (this.state.sortDirection === "asc") {
         const d = [...this.state.data];
-        const data =  d.sort(function(a,b){
-          return new Date( '1970/01/01 ' +b.heure_fin) - new Date('1970/01/01 ' +a.heure_fin);
+        const data = d.sort(function(a, b) {
+          return (
+            new Date("1970/01/01 " + b.heure_fin) -
+            new Date("1970/01/01 " + a.heure_fin)
+          );
         });
-        
-        this.setState({data});
-        this.setState({upDown : <ArrowUpward />});
-        this.setState({sortDirection : "desc"});
-      }else{
+
+        this.setState({ data });
+        this.setState({ upDown: <ArrowUpward /> });
+        this.setState({ sortDirection: "desc" });
+      } else {
         const d = [...this.state.data];
-        const data =  d.sort(function(a,b){
-          return new Date( '1970/01/01 ' +b.heure_fin) - new Date('1970/01/01 ' +a.heure_fin);
+        const data = d.sort(function(a, b) {
+          return (
+            new Date("1970/01/01 " + b.heure_fin) -
+            new Date("1970/01/01 " + a.heure_fin)
+          );
         });
         data.reverse();
-        this.setState({data});
-        this.setState({upDown : <ArrowDownward />});
-        this.setState({sortDirection : "asc"});
-      } 
-    }else if (label === "heure_debut"){
-      this.setState({sortedLabele :  "heure_debut"});
-      if(this.state.sortDirection === "asc"){
+        this.setState({ data });
+        this.setState({ upDown: <ArrowDownward /> });
+        this.setState({ sortDirection: "asc" });
+      }
+    } else if (label === "heure_debut") {
+      this.setState({ sortedLabele: "heure_debut" });
+      if (this.state.sortDirection === "asc") {
         const d = [...this.state.data];
-        const data =  d.sort(function(a,b){
-          return new Date( '1970/01/01 ' +b.heure_debut) - new Date('1970/01/01 ' +a.heure_debut);
+        const data = d.sort(function(a, b) {
+          return (
+            new Date("1970/01/01 " + b.heure_debut) -
+            new Date("1970/01/01 " + a.heure_debut)
+          );
         });
-        
-        this.setState({data});
-        this.setState({upDown : <ArrowUpward />});
-        this.setState({sortDirection : "desc"});
-      }else{
+
+        this.setState({ data });
+        this.setState({ upDown: <ArrowUpward /> });
+        this.setState({ sortDirection: "desc" });
+      } else {
         const d = [...this.state.data];
-        const data =  d.sort(function(a,b){
-          return new Date( '1970/01/01 ' +b.heure_debut) - new Date('1970/01/01 ' +a.heure_debut);
+        const data = d.sort(function(a, b) {
+          return (
+            new Date("1970/01/01 " + b.heure_debut) -
+            new Date("1970/01/01 " + a.heure_debut)
+          );
         });
         data.reverse();
-        this.setState({data});
-        this.setState({upDown : <ArrowDownward />});
-        this.setState({sortDirection : "asc"});
-      } 
-    }//nb_tech
-
-
-    else if (label === "nb_tech"){
-      this.setState({sortedLabele :  "nb_tech"});
-      if(this.state.sortDirection === "asc"){
+        this.setState({ data });
+        this.setState({ upDown: <ArrowDownward /> });
+        this.setState({ sortDirection: "asc" });
+      }
+    } //nb_tech
+    else if (label === "nb_tech") {
+      this.setState({ sortedLabele: "nb_tech" });
+      if (this.state.sortDirection === "asc") {
         const d = [...this.state.data];
-        const data =  d.sort(function(a,b){
+        const data = d.sort(function(a, b) {
           return b.nb_tech - a.nb_tech;
         });
-        
-        this.setState({data});
-        this.setState({upDown : <ArrowUpward />});
-        this.setState({sortDirection : "desc"});
-      }else{
+
+        this.setState({ data });
+        this.setState({ upDown: <ArrowUpward /> });
+        this.setState({ sortDirection: "desc" });
+      } else {
         const d = [...this.state.data];
-        const data =  d.sort(function(a,b){
+        const data = d.sort(function(a, b) {
           return b.nb_tech - a.nb_tech;
         });
         data.reverse();
-        this.setState({data});
-        this.setState({upDown : <ArrowDownward />});
-        this.setState({sortDirection : "asc"});
+        this.setState({ data });
+        this.setState({ upDown: <ArrowDownward /> });
+        this.setState({ sortDirection: "asc" });
+      }
+    }//cout_consommable
+    else if (label === "cout_consommable") {
+      this.setState({ sortedLabele: "cout_consommable" });
+      if (this.state.sortDirection === "asc") {
+        const d = [...this.state.data];
+        const data = d.sort(function(a, b) {
+          return b.cout_consommable - a.cout_consommable;
+        });
+
+        this.setState({ data });
+        this.setState({ upDown: <ArrowUpward /> });
+        this.setState({ sortDirection: "desc" });
+      } else {
+        const d = [...this.state.data];
+        const data = d.sort(function(a, b) {
+          return b.cout_consommable - a.cout_consommable;
+        });
+        data.reverse();
+        this.setState({ data });
+        this.setState({ upDown: <ArrowDownward /> });
+        this.setState({ sortDirection: "asc" });
       }
     }
 
-   
-  }
+  };
 
-  sortOnDate = () =>{
-    this.setState({sortedLabele :  "date"})
-    if(this.state.sortDirection === "asc"){
+  sortOnDate = () => {
+    this.setState({ sortedLabele: "date" });
+    if (this.state.sortDirection === "asc") {
       const data = [...this.state.data];
       this.sortDate(data);
-      this.setState({data});
-      this.setState({upDown : <ArrowUpward />});
-      this.setState({sortDirection : "desc"});
-    }else{
+      this.setState({ data });
+      this.setState({ upDown: <ArrowUpward /> });
+      this.setState({ sortDirection: "desc" });
+    } else {
       const data = [...this.state.data];
-      
+
       data.reverse();
-      this.setState({data});
-      this.setState({upDown : <ArrowDownward />});
-      this.setState({sortDirection : "asc"});
+      this.setState({ data });
+      this.setState({ upDown: <ArrowDownward /> });
+      this.setState({ sortDirection: "asc" });
     }
+  };
 
-  }
-
- 
   componentWillMount = () => {
     const d = this.sortDate(this.props.data);
-    
 
     for (let i = 0; i < d.length; i++) {
       this.setState({ [`checkboxSelected-${i}`]: false });
@@ -231,11 +266,17 @@ class Facture extends Component {
         (item["barème"] / 60 / 60 / 1000) *
         (mils_fin - mils_debut)
       ).toFixed(2);
-      item.somme = somme;
-      totale = totale + Number.parseFloat(somme);
+
+      let cout_consommable = 0;
+      item["consommable"].map(a => {
+        cout_consommable += a.qte * a.cout;
+      });
+      item.cout_consommable = cout_consommable;
+      item.somme = Number.parseFloat(somme) + cout_consommable;
+      totale = totale + item.somme;
       return item;
     });
-    console.log(totale);
+
     this.setState({ totale });
     this.setState({ data });
   };
@@ -302,8 +343,12 @@ class Facture extends Component {
     this.setState({ dialogTitle: "Liste des Techniciens" });
     items.map((item, index) => {
       dialogContentPrintItem.push(<hr />);
-      dialogContentPrintItem.push(<Typography variant="subheading" key ={index}>Déplacement  de date : {item.date}</Typography>)
-      
+      dialogContentPrintItem.push(
+        <Typography variant="subheading" key={index}>
+          Déplacement de date : {item.date}
+        </Typography>
+      );
+
       //   for (let i = 0; i < item.nb_tech; i++) {
       dialogContentPrintItem.push(
         <Table>
@@ -320,7 +365,7 @@ class Facture extends Component {
           </TableHead>
           <TableBody>
             {item.techniciens.map((row, index) => (
-              <TableRow  key={"techniciens" + index}>
+              <TableRow key={"techniciens" + index}>
                 <TableCell component="th" scope="row">
                   {row.nom}
                 </TableCell>
@@ -371,10 +416,9 @@ class Facture extends Component {
     this.setState({ dialogContentPrintItem });
     this.openDialogPrintItemFunc();
   };
-  showMultiItem = (list) => {
-    if(list === "Techniciens")
-    this.showItem(this.state.selectedValue);
-    else{
+  showMultiItem = list => {
+    if (list === "Techniciens") this.showItem(this.state.selectedValue);
+    else {
       this.showResource(this.state.selectedValue);
     }
   };
@@ -384,11 +428,15 @@ class Facture extends Component {
     this.setState({ myItems });
     this.setState({ dialogTitle: "Liste des Ressource" });
     const dialogContentPrintItem = [];
-    
+
     let totalCout = 0;
-    items.map((item,index) => {
+    items.map((item, index) => {
       dialogContentPrintItem.push(<hr />);
-      dialogContentPrintItem.push(<Typography variant="subheading" key ={index}>Déplacement  de date : {item.date}</Typography>)
+      dialogContentPrintItem.push(
+        <Typography variant="subheading" key={index}>
+          Déplacement de date : {item.date}
+        </Typography>
+      );
       dialogContentPrintItem.push(
         <Table>
           <TableHead>
@@ -414,7 +462,6 @@ class Facture extends Component {
           </TableBody>
         </Table>
       );
-     
     });
     dialogContentPrintItem.push(
       <div>
@@ -435,7 +482,7 @@ class Facture extends Component {
     printIt(this.state.myItems);
   };
   render() {
-    const keys = Object.keys(this.state.data[0]);
+    
     return (
       <React.Fragment>
         <AppBar
@@ -450,7 +497,10 @@ class Facture extends Component {
             <div style={{ flexGrow: 1 }} />
             <form>
               {this.state.selectedValue.length > 0 ? (
-                <Button color="inherit" onClick={()=>this.showMultiItem("Techniciens")}>
+                <Button
+                  color="inherit"
+                  onClick={() => this.showMultiItem("Techniciens")}
+                >
                   <Typography
                     color="inherit"
                     variant="caption"
@@ -462,15 +512,18 @@ class Facture extends Component {
                 </Button>
               ) : null}
               {this.state.selectedValue.length > 0 ? (
-                <Button color="inherit" onClick={()=>this.showMultiItem("Ressource")}>
+                <Button
+                  color="inherit"
+                  onClick={() => this.showMultiItem("Ressource")}
+                >
                   <Typography
                     color="inherit"
                     variant="caption"
                     style={{ margin: 2 }}
                   >
-                    Afficher Liste des Ressource
+                    Afficher Liste des Ressources
                   </Typography>
-                  <Group />
+                  <Build />
                 </Button>
               ) : null}
               <Button color="inherit" id="print-btn" onClick={this.Imprission}>
@@ -502,52 +555,101 @@ class Facture extends Component {
                   </TableCell>
 
                   <TableCell>
-                    <Typography style={{ color: "white" }} variant="h6" onClick={()=>this.sortDicimal("nb_tech")}>
+                    <Typography
+                      style={{ color: "white" }}
+                      variant="h6"
+                      onClick={() => this.sortDicimal("nb_tech")}
+                    >
                       Nombre Techniciens
-                      {this.state.sortedLabele === "nb_tech" ?<IconButton color="inherit" >
-                      {this.state.upDown}
-                    </IconButton>: null}
+                      {this.state.sortedLabele === "nb_tech" ? (
+                        <IconButton color="inherit">
+                          {this.state.upDown}
+                        </IconButton>
+                      ) : null}
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography style={{ color: "white" }} variant="h6" onClick={()=>this.sortDicimal("heure_debut")}>
+                    <Typography
+                      style={{ color: "white" }}
+                      variant="h6"
+                      onClick={() => this.sortDicimal("heure_debut")}
+                    >
                       Heure Début
-                      {this.state.sortedLabele === "heure_debut" ?<IconButton color="inherit" >
-                      {this.state.upDown}
-                    </IconButton>: null}
+                      {this.state.sortedLabele === "heure_debut" ? (
+                        <IconButton color="inherit">
+                          {this.state.upDown}
+                        </IconButton>
+                      ) : null}
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography style={{ color: "white" }} variant="h6" onClick={()=>this.sortDicimal("heure_fin")}>
+                    <Typography
+                      style={{ color: "white" }}
+                      variant="h6"
+                      onClick={() => this.sortDicimal("heure_fin")}
+                    >
                       Heure Fin
-                      {this.state.sortedLabele === "heure_fin" ?<IconButton color="inherit" >
-                      {this.state.upDown}
-                    </IconButton>: null}
+                      {this.state.sortedLabele === "heure_fin" ? (
+                        <IconButton color="inherit">
+                          {this.state.upDown}
+                        </IconButton>
+                      ) : null}
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography style={{ color: "white" }} variant="h6" onClick={this.sortOnDate}>
+                    <Typography
+                      style={{ color: "white" }}
+                      variant="h6"
+                      onClick={this.sortOnDate}
+                    >
                       Date
-                      {this.state.sortedLabele === "date" ?<IconButton color="inherit" >
-                      {this.state.upDown}
-                    </IconButton>: null}
+                      {this.state.sortedLabele === "date" ? (
+                        <IconButton color="inherit">
+                          {this.state.upDown}
+                        </IconButton>
+                      ) : null}
                     </Typography>
-                    
                   </TableCell>
                   <TableCell>
-                    <Typography style={{ color: "white" }} variant="h6"  onClick={()=>this.sortDicimal("tarif")}>
+                    <Typography
+                      style={{ color: "white" }}
+                      variant="h6"
+                      onClick={() => this.sortDicimal("tarif")}
+                    >
                       Tarif
-                      {this.state.sortedLabele === "tarif" ?<IconButton color="inherit" >
-                      {this.state.upDown}
-                    </IconButton>: null}
+                      {this.state.sortedLabele === "tarif" ? (
+                        <IconButton color="inherit">
+                          {this.state.upDown}
+                        </IconButton>
+                      ) : null}
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography style={{ color: "white" }} variant="h6" onClick={()=>this.sortDicimal("prix")}>
+                    <Typography
+                      style={{ color: "white" }}
+                      variant="h6"
+                      onClick={() => this.sortDicimal("cout_consommable")}
+                    >
+                      Coût consommable
+                      {this.state.sortedLabele === "cout_consommable" ? (
+                        <IconButton color="inherit">
+                          {this.state.upDown}
+                        </IconButton>
+                      ) : null}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      style={{ color: "white" }}
+                      variant="h6"
+                      onClick={() => this.sortDicimal("prix")}
+                    >
                       Prix
-                      {this.state.sortedLabele === "prix" ?<IconButton color="inherit" >
-                      {this.state.upDown}
-                    </IconButton>: null}
+                      {this.state.sortedLabele === "prix" ? (
+                        <IconButton color="inherit">
+                          {this.state.upDown}
+                        </IconButton>
+                      ) : null}
                     </Typography>
                   </TableCell>
 
@@ -572,25 +674,14 @@ class Facture extends Component {
                         />
                       </TableCell>
 
-                      <TableCell >
-                        {item["nb_tech"]}
-                      </TableCell>
-                      <TableCell >
-                        {item["heure_debut"]}
-                      </TableCell>
-                      <TableCell >
-                        {item["heure_fin"]}
-                      </TableCell>
-                      <TableCell >
-                        {item["date"]}
-                      </TableCell>
-                      <TableCell >
-                        {item["barème"]}
-                      </TableCell>
-                      <TableCell >
-                        {item["somme"]}
-                      </TableCell>
+                      <TableCell>{item["nb_tech"]}</TableCell>
+                      <TableCell>{item["heure_debut"]}</TableCell>
+                      <TableCell>{item["heure_fin"]}</TableCell>
+                      <TableCell>{item["date"]}</TableCell>
+                      <TableCell>{item["barème"]}</TableCell>
+                      <TableCell>{item["cout_consommable"]}</TableCell>
 
+                      <TableCell>{item["somme"]}</TableCell>
 
                       <TableCell
                         key={`showResource-${index}`}
@@ -623,17 +714,16 @@ class Facture extends Component {
                 backgroundColor: "#F2F2F2",
                 display: "flex",
                 flexDirection: "column",
-                marginTop : 10,
-                padding : 5,
-                boxShadow : "1px 1px 4px rgba(0,0,0,0.4)"
-
+                marginTop: 10,
+                padding: 5,
+                boxShadow: "1px 1px 4px rgba(0,0,0,0.4)"
               }}
             >
-              <Typography variant="h6"  dir="ltr">
+              <Typography variant="h6" dir="ltr">
                 Montant HT : {this.state.totale} €
               </Typography>
-              
-              <Typography variant="h6"   dir="ltr">
+
+              <Typography variant="h6" dir="ltr">
                 Montant TTC :{" "}
                 {(
                   this.state.totale +
@@ -641,7 +731,7 @@ class Facture extends Component {
                 ).toFixed(2)}{" "}
                 €
               </Typography>
-              
+
               <Typography variant="h6" dir="ltr">
                 Montant TVA :{" "}
                 {(this.state.totale * (this.props.tva / 100)).toFixed(2)} €

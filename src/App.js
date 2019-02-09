@@ -29,16 +29,7 @@ const data = [
     ],
     consommable : [
 
-      {
-        article : "Disque 1To",
-        qte : 1,
-        cout : 120.5
-      },
-      {
-        article : "Cable Rj45",
-        qte : 4,
-        cout : 10
-      }
+   
 
     ]
   },
