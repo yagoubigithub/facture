@@ -557,7 +557,7 @@ class Facture extends Component {
                   <TableCell>
                     <Typography
                       style={{ color: "white" }}
-                      variant="h6"
+                      variant="body1"
                       onClick={() => this.sortDicimal("nb_tech")}
                     >
                       Nombre Techniciens
@@ -571,7 +571,7 @@ class Facture extends Component {
                   <TableCell>
                     <Typography
                       style={{ color: "white" }}
-                      variant="h6"
+                      variant="body1"
                       onClick={() => this.sortDicimal("heure_debut")}
                     >
                       Heure Début
@@ -585,7 +585,7 @@ class Facture extends Component {
                   <TableCell>
                     <Typography
                       style={{ color: "white" }}
-                      variant="h6"
+                      variant="body1"
                       onClick={() => this.sortDicimal("heure_fin")}
                     >
                       Heure Fin
@@ -599,7 +599,7 @@ class Facture extends Component {
                   <TableCell>
                     <Typography
                       style={{ color: "white" }}
-                      variant="h6"
+                      variant="body1"
                       onClick={this.sortOnDate}
                     >
                       Date
@@ -613,7 +613,7 @@ class Facture extends Component {
                   <TableCell>
                     <Typography
                       style={{ color: "white" }}
-                      variant="h6"
+                      variant="body1"
                       onClick={() => this.sortDicimal("tarif")}
                     >
                       Tarif
@@ -627,7 +627,7 @@ class Facture extends Component {
                   <TableCell>
                     <Typography
                       style={{ color: "white" }}
-                      variant="h6"
+                      variant="body1"
                       onClick={() => this.sortDicimal("cout_consommable")}
                     >
                       Coût consommable
@@ -641,7 +641,7 @@ class Facture extends Component {
                   <TableCell>
                     <Typography
                       style={{ color: "white" }}
-                      variant="h6"
+                      variant="body1"
                       onClick={() => this.sortDicimal("prix")}
                     >
                       Prix

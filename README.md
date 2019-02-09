@@ -2,7 +2,7 @@
  > This component is for display a table of data as a bill 
 
 
-### Demo  [Facture](https://nervous-villani-7b9073.netlify.com/)
+### Demo  [Facture](https://trusting-heisenberg-beddfc.netlify.com/)
 
 ##  Exemple :
 
